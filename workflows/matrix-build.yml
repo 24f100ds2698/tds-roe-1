@@ -2,9 +2,10 @@ name: Matrix Build with Artifacts
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+  workflow_dispatch:   
+
 
 jobs:
   build:
