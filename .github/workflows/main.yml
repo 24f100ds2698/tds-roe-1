@@ -4,33 +4,34 @@ on:
   push:
     branches: [main]
   pull_request:
-  workflow_dispatch:   # allows you to manually trigger it
+  workflow_dispatch:
 
 jobs:
   build:
+    name: Build for Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node-version: [14, 16, 18]
-
-    runs-on: ubuntu-latest
+        python-version: ['3.9', '3.10', '3.11']
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: matrix-132b8de
-        run: echo "Building for Node version ${{ matrix.node-version }}"
+        run: echo "Building for Python version ${{ matrix.python-version }}"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: ${{ matrix.node-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Generate build artifact
-        run: echo "Build output for Node version ${{ matrix.node-version }}" > build-output-${{ matrix.node-version }}.txt
+        run: echo "Build output for Python version ${{ matrix.python-version }}" > build-output-${{ matrix.python-version }}.txt
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-132b8de-v${{ matrix.node-version }}
-          path: build-output-${{ matrix.node-version }}.txt
+          name: build-132b8de-v${{ matrix.python-version }}
+          path: build-output-${{ matrix.python-version }}.txt
